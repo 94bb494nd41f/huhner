@@ -6,16 +6,6 @@ from time import sleep
 
 
 def takepicture(resolution):
-    camera = PiCamera(resolution=(resolution),sensor_mode=1 )
-    camera.iso =800
-    # Wait for the automatic gain control to settle
-    sleep(2)
-    # Now fix the values
-    camera.shutter_speed = camera.exposure_speed
-    camera.exposure_mode = 'off'
-    g = camera.awb_gains
-    camera.awb_mode = 'off'
-    camera.awb_gains = g
     timestamp = datetime.now()
     print('timestamp:', timestamp)
  #   camera.start_preview()
@@ -23,10 +13,25 @@ def takepicture(resolution):
     filename = filename.replace(":", "")
     filename = filename.replace(".", "")
     # filename=filename.replace(" ","")
+   
+    camera = PiCamera(resolution=(resolution),framerate_range=(1.0/6.0, 30)  )
+    camera.iso =800
+    # Wait for the automatic gain control to settle
+    sleep(1.5)
+    # Now fix the values
+#    camera.shutter_speed = 750000 
+    camera.shutter_speed = 750000 #für automode
+    camera.exposure_mode = 'auto'
+   # g = camera.awb_gains
+    #camera.awb_mode = 'off'
+    #camera.awb_gains = g
+     #   camera.start_preview()
+     # filename=filename.replace(" ","")
     camera.capture((filename + ".jpg"))
-#    camera.stop_preview()
-    print("Picture taken")
     camera.close()
+#    camera.stop_preview()
+    
+    print("Picture taken")
     return
 
 
